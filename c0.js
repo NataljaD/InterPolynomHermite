@@ -13,7 +13,7 @@ function dl0(){
 }
 
 function alpha(){
-    return -(dl0(nodes[0])/(l0(nodes[0])*l0(nodes[0])));
+    return -(dl0()/(l0(nodes[0])*l0(nodes[0])));
 }
 
 function beta(){
