@@ -1,7 +1,3 @@
-function b3(x){
-    return m3(x)*(x-nodes[3])*(alphaPol()*x + betaPol());
-    }
-    
 function m3(x){
     return (x-nodes[0])*(x-nodes[0])*(x-nodes[1])*(x-nodes[2]);
 }
@@ -13,9 +9,13 @@ function dm3(){
 }
 
 function alphaPol(){
-    return -(dm3()/m3(nodes[3]));
+    return -dm3() / (m3(nodes[3]) * m3(nodes[3]));
 }
     
 function betaPol(){
-    return (1/m3(nodes[3])+nodes[3]*alpha());
+    return 1 / m3(nodes[3]) - nodes[3] * alphaPol();
+}
+
+function b3(x){
+    return m3(x)*(x-nodes[3])*(alphaPol()*x + betaPol());
 }
