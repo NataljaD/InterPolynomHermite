@@ -1,5 +1,5 @@
 function c1(x){
-    return (x-nodes[0])*(x-nodes[0])*(x-nodes[2])*(x-nodes[3])*(x-nodes[3])*(x-nodes[3])*K;
+    return (x-nodes[0])*(x-nodes[0])*(x-nodes[2])*(x-nodes[3])*(x-nodes[3])*(x-nodes[3])*K();
 }
 
 function K(){
