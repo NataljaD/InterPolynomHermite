@@ -7,21 +7,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
 
-    <script src="globals.js"></script>
-    <script src="c0.js"></script>
-    <script src="c1.js"></script>
-    <script src="c2.js"></script>
-    <script src="c3.js"></script>
-    <script src="b0.js"></script>
-    <script src="b3.js"></script>
-    <script src="a3.js"></script>
     <script src="main.js"></script>
+    <script src="ermit.js"></script>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     
 </head>
-<body>
-    <div id="hermit-plot">
-    </div>
-    <button onclick="main()">Calc</button>
+<body >
+    <h1 id="title">Hermite polynomials</h1>
+      <form action="javascript:" id="input_form">
+        <div class="inputs">
+            <div class="inputs_nodes"> 
+            <p>nodes[0]=<input name="node0" type="text" placeholder="Input first node" id="nodes0"></p>
+            <p>nodes[1]=<input type="text" placeholder="Input second node" id="nodes1"></p>
+            <p>nodes[2]=<input type="text" placeholder="Input third node" id="nodes2"></p>
+            <p>nodes[3]=<input type="text" placeholder="Input fourth node" id="nodes3"></p>
+            
+            </div>
+            <div class="inputs_f">
+            <p>f(nodes[0])=<input type="text" placeholder="Input f(nodes[0])" id="fnodes0"></p>
+            <p>f(nodes[1])=<input type="text" placeholder="Input f(nodes[1])" id="fnodes1"></p>
+            <p>f(nodes[2])=<input type="text" placeholder="Input f(nodes[2])" id="fnodes2"></p>
+            <p>f(nodes[3])=<input type="text" placeholder="Input f(nodes[3])" id="fnodes3"></p>
+            </div>
+            
+            <div class="inputs_df">
+                    <p>f'(nodes[0])=<input type="text" placeholder="Input f'(nodes[0])" id="dfnodes0"></p>
+                    <p>f'(nodes[3])=<input type="text" placeholder="Input f'(nodes[3])" id="dfnodes3"></p>
+            </div>
+
+            <div class="inputs_d2f">
+                    <p>f''(nodes[3])=<input type="text" placeholder="Input f''(nodes[3])" id="d2fnodes3"></p>
+                    <button type="submit" id="clik" onclick="onClick()" >Clik here</button>
+            </div>
+
+            </div>
+    </form>
+
+    <div id="input-plot">
+        </div>
+        <!-- <button onclick="onClick()">Calc</button> -->
 </body>
 </html>
