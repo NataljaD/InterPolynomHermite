@@ -7,44 +7,102 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
 
+    <script src="core.js"></script>
+    <script src="latex-builder.js"></script>
     <script src="main.js"></script>
-    <script src="ermit.js"></script>
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     
+    <!--script src="ermit_old.js"></script-->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
+    <style>
+    
+    </style>
 </head>
-<body >
-    <h1 id="title">Hermite polynomials</h1>
-      <form action="javascript:" id="input_form">
-        <div class="inputs">
-            <div class="inputs_nodes"> 
-            <p>nodes[0]=<input name="node0" type="text" placeholder="Input first node" id="nodes0"></p>
-            <p>nodes[1]=<input type="text" placeholder="Input second node" id="nodes1"></p>
-            <p>nodes[2]=<input type="text" placeholder="Input third node" id="nodes2"></p>
-            <p>nodes[3]=<input type="text" placeholder="Input fourth node" id="nodes3"></p>
-            
+<body>
+        
+    <header>
+        <h1 id="title">Hermite polynomials</h1>
+        <h2>Ввести дані самому</h2>
+        <nav id="inter-goal">
+            <input id="toggle-on" class="toggle toggle-left" name="toggle" value="false" type="radio" checked onchange="withInputChange(this)">
+            <label for="toggle-on" class="btn">Так</label>
+            <input id="toggle-off" class="toggle toggle-right" name="toggle" value="true" type="radio" onchange="withoutInputChange(this)">
+            <label for="toggle-off" class="btn">Ні</label>
+        </nav>
+    </header>
+    <section id="without-input" class="hidden">
+        <h2>Використовувати функцію в коді toInterpolate(), щоб отримати дані</h2>
+        <div class="controls">
+            <button>Clik here</button>
+        </div>
+    </section>
+    <section id="input-data">
+        <form action="javascript:" id="input_form" onsubmit="onCalculate()">
+            <div class="inputs">
+                <div class="inputs_nodes"> 
+                <p>\( x_0 \) = 
+                    <input name="node0" required="required" type="text" placeholder="Input value . . ." id="nodes0">
+                </p>
+                <p>\( x_1 \) = 
+                    <input type="text" required="required" placeholder="Input value . . ." id="nodes1">
+                </p>
+                <p>\( x_2 \) = 
+                    <input type="text" required="required" placeholder="Input value . . ." id="nodes2">
+                </p>
+                <p>\( x_3 \) = 
+                    <input type="text" required="required" placeholder="Input value . . ." id="nodes3">
+                </p>
+                
+                </div>
+                <div class="inputs_f">
+                <p>\( f(x_0) = \) 
+                    <input type="text" required="required" placeholder="Input value . . ." id="fnodes0">
+                </p>
+                <p>\( f(x_1) = \) 
+                    <input type="text" required="required" placeholder="Input value . . ." id="fnodes1">
+                </p>
+                <p>\( f(x_2) = \)
+                    <input type="text" required="required" placeholder="Input value . . ." id="fnodes2">
+                </p>
+                <p>\( f(x_4) = \)
+                    <input type="text" required="required" placeholder="Input value . . ." id="fnodes3">
+                </p>
+                </div>
+                
+                <div class="inputs_df">
+                        <p>\( f'(x_0) = \)<input type="text" placeholder="Input value . . ." id="dfnodes0"></p>
+                        <p>\( f'(x_3) = \)<input type="text" placeholder="Input value . . ." id="dfnodes3"></p>
+                </div>
+    
+                <div class="inputs_d2f">
+                        <p>\( f''(x_3) = \)<input type="text" placeholder="Input value . . ." id="d2fnodes3"></p>
+                        
+                </div>
             </div>
-            <div class="inputs_f">
-            <p>f(nodes[0])=<input type="text" placeholder="Input f(nodes[0])" id="fnodes0"></p>
-            <p>f(nodes[1])=<input type="text" placeholder="Input f(nodes[1])" id="fnodes1"></p>
-            <p>f(nodes[2])=<input type="text" placeholder="Input f(nodes[2])" id="fnodes2"></p>
-            <p>f(nodes[3])=<input type="text" placeholder="Input f(nodes[3])" id="fnodes3"></p>
+            <div class="controls">
+                <button type="submit">Clik here</button>
             </div>
-            
-            <div class="inputs_df">
-                    <p>f'(nodes[0])=<input type="text" placeholder="Input f'(nodes[0])" id="dfnodes0"></p>
-                    <p>f'(nodes[3])=<input type="text" placeholder="Input f'(nodes[3])" id="dfnodes3"></p>
-            </div>
-
-            <div class="inputs_d2f">
-                    <p>f''(nodes[3])=<input type="text" placeholder="Input f''(nodes[3])" id="d2fnodes3"></p>
-                    <button type="submit" id="clik" onclick="onClick()" >Clik here</button>
-            </div>
-
-            </div>
-    </form>
+        </form>
+    </section>
+    
+    <section>
+        <p id="hermit-latex">
+                $$
+                H(x) = (x - x_1)(x-x_2)(x-x_3)^3 (\alpha x + \beta) f(x_0) + \\
+                       + K(x - x_0)^2(x - x_2)(x - x_3)^3  f(x_1)+ \\
+                       + K(x - x_0)^2(x - x_1)(x - x_3)^3 f(x_2) + \\
+                       + (x - x_0)^2(x - x_1)(x - x_2)(\alpha x^2 + \beta x + \gamma) f(x_3) + \\
+                       + K(x - x_0)(x - x_1)(x - x_2)(x - x_3)^3 f'(x_0)+ \\
+                       + (x - x_0)^2(x - x_1)(x - x_2)(x - x_3)(\alpha x + \beta)f'(x_3) + \\
+                       + K(x - x_0)^2(x - x_1)(x - x_2)(x - x_3)^2 f''(x_3)
+                $$
+        <p>
+    </section>
+      
 
     <div id="input-plot">
-        </div>
+
+    </div>
         <!-- <button onclick="onClick()">Calc</button> -->
 </body>
 </html>

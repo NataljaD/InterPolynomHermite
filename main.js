@@ -1,58 +1,35 @@
-function main() {
-  // var arg = [];
-  // var farg = [];
-
-  // var result = '';
-  // var h = Math.PI / 12;
-  // for(var i = 0; i <= 12; ++i) {
-    
-  //   arg.push(h*i);
-    
-  //   farg.push(Hermit(h*i));
-
-  //   result = result + `${h*i},${Hermit(h*i)}\n`;
-  // }
-
+function showHermitLatex(hermit) {
+  var hermitLatex = new LatexBuilder(hermit).getHermitLatex();
+  document.getElementById('hermit-latex').innerHTML = hermitLatex;
+  MathJax.Hub.Typeset();
 }
 
 function collectData() {
-  var nodes = [];
-  var fnodes = [];
-  var dfnodes = [];
-  var d2fnodes = [];
+  var result = new HermitData();
+
   for(var i=0; i<4; i++){
-    nodes[i]=parseFloat(document.getElementById(`nodes${i}`).value);
-    fnodes[i]=parseFloat(document.getElementById(`fnodes${i}`).value);
-    //console.log(nodes[i]+"\n");
-    //console.log(fnodes[i]+"\n");
+    result.nodes[i]  = parseFloat(document.getElementById(`nodes${i}`).value);
+    result.fnodes[i] = parseFloat(document.getElementById(`fnodes${i}`).value);
   }
 
-  for(var i=0; i<4; i=i+3){
-    dfnodes[i]=parseFloat(document.getElementById(`dfnodes${i}`).value);
-    //console.log(dfnodes[i]+"\n");
-  }
+  result.dfnodes[0] = parseFloat(document.getElementById(`dfnodes0`).value);
+  result.dfnodes[3] = parseFloat(document.getElementById(`dfnodes3`).value);
 
-  d2fnodes[3]=parseFloat(document.getElementById(`d2fnodes3`).value);
-  //console.log(d2fnodes[3]+"\n");
+  result.d2fnodes[3] = parseFloat(document.getElementById(`d2fnodes3`).value);
 
-  return {
-    nodes: nodes,
-    fnodes: fnodes,
-    dfnodes: dfnodes,
-    d2fnodes: d2fnodes
-  }
+  return result;
 }
 
-function onClick() {
-  //var data = collectData();
-  var data = {};
+function onCalculate() {
+  // var data = collectData();
+  var data = new HermitData();
   data.nodes = [0, Math.PI/4, Math.PI*3/4, Math.PI];
   data.fnodes = data.nodes.map(Math.sin);
   data.dfnodes = [Math.cos(data.nodes[0]), undefined, undefined, Math.cos(data.nodes[3])];
   data.d2fnodes = [undefined, undefined, undefined, -Math.sin(data.nodes[3])];
-  var ermit = new InterpolationPoly(data);
+  var ermit = new Hermit(data);
 
-  //console.log(ermit.hermite(1));
+  showHermitLatex(ermit);
 
   var h=(data.nodes[3]-data.nodes[0])/12;
   var tabHermite=[];
@@ -62,7 +39,7 @@ function onClick() {
   {
     var arg = data.nodes[0] + i*h;
     tabHermite[i]=arg;
-    tabHermiteF[i]=ermit.hermite(arg);
+    tabHermiteF[i]=ermit.calculate(arg);
   }
 
   var trace1 = {
@@ -86,4 +63,28 @@ function onClick() {
 
   var plotData = [trace1, trace2];
   Plotly.newPlot('input-plot', plotData);  
+}
+
+function withInputChange(target) {
+  if(target.checked) {
+    document.getElementById('without-input').classList.add('hidden');
+    document.getElementById('input-data').classList.remove('hidden');
+  }
+
+  if(!target.checked) {
+    document.getElementById('without-input').classList.remove('hidden');
+    document.getElementById('input-data').classList.add('hidden');
+  }
+}
+
+function withoutInputChange(target) {
+  if(!target.checked) {
+    document.getElementById('without-input').classList.add('hidden');
+    document.getElementById('input-data').classList.remove('hidden');
+  }
+
+  if(target.checked) {
+    document.getElementById('without-input').classList.remove('hidden');
+    document.getElementById('input-data').classList.add('hidden');
+  }
 }
