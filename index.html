@@ -21,16 +21,17 @@
 <body>
         
     <header>
-        <h1 id="title">Hermite polynomials</h1>
+        <h1 id="title">Інтерполяційний многочлен Ерміта</h1>
         <h2>Ввести дані самому</h2>
         <nav id="inter-goal">
-            <input id="toggle-on" class="toggle toggle-left" name="toggle" value="false" type="radio" checked onchange="withInputChange(this)">
+            <input id="toggle-on" class="toggle toggle-left" name="toggle" value="false" type="radio" checked onchange="withInputChange(true)">
             <label for="toggle-on" class="btn">Так</label>
-            <input id="toggle-off" class="toggle toggle-right" name="toggle" value="true" type="radio" onchange="withoutInputChange(this)">
+            <input id="toggle-off" class="toggle toggle-right" name="toggle" value="true" type="radio" onchange="withInputChange(false)">
             <label for="toggle-off" class="btn">Ні</label>
         </nav>
     </header>
     <section id="without-input" class="hidden">
+
         <h2>Використовувати функцію в коді toInterpolate(), щоб отримати дані</h2>
         <div class="controls">
             <button onclick="onCalculate(false)">Clik here</button>

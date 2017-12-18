@@ -25,13 +25,18 @@ class LatexBuilder {
       h.c1.K(), data.fnodes[1],
       h.c2.K(), data.fnodes[2],
       h.c3.a(), h.c3.b(), h.c3.c(), data.fnodes[3],
+
       h.b0.K(), data.dfnodes[0],
       h.b3.alpha(), h.b3.beta(), data.dfnodes[3],
+
       h.a3.K(), data.d2fnodes[3]
     ], data.nodes);
 
     return template;
   }
+
+
+
 
   render(numbers, nds) {
     var num = numbers.map(x => this.round(x));

@@ -75,25 +75,11 @@ function onCalculate(collect) {
   Plotly.newPlot('input-plot', plotData);  
 }
 
-function withInputChange(target) {
-  if(target.checked) {
+function withInputChange(wantInput) {
+  if(wantInput) {
     document.getElementById('without-input').classList.add('hidden');
     document.getElementById('input-data').classList.remove('hidden');
-  }
-
-  if(!target.checked) {
-    document.getElementById('without-input').classList.remove('hidden');
-    document.getElementById('input-data').classList.add('hidden');
-  }
-}
-
-function withoutInputChange(target) {
-  if(!target.checked) {
-    document.getElementById('without-input').classList.add('hidden');
-    document.getElementById('input-data').classList.remove('hidden');
-  }
-
-  if(target.checked) {
+  } else {
     document.getElementById('without-input').classList.remove('hidden');
     document.getElementById('input-data').classList.add('hidden');
   }

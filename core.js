@@ -1,15 +1,3 @@
-/*
-$$
-  H(x) = (x - x_1)(x-x_2)(x-x_3)^3 (\alpha x + \beta) f(x_0) + \\
-         + K(x - x_0)^2(x - x_2)(x - x_3)^3  f(x_1)+ \\
-         + K(x - x_0)^2(x - x_1)(x - x_3)^3 f(x_2) + \\
-         + (x - x_0)^2(x - x_1)(x - x_2)(\alpha x^2 + \beta x + \gamma) f(x_3) + \\
-         + K(x - x_0)(x - x_1)(x - x_2)(x - x_3)^3 f'(x_0)+ \\
-         + (x - x_0)^2(x - x_1)(x - x_2)(x - x_3)(\alpha x + \beta)f'(x_3) + \\
-         + K(x - x_0)^2(x - x_1)(x - x_2)(x - x_3)^2 f''(x_3)
-  $$
-*/
-
 class HermitData {
   constructor(n = 4) {
     this.nodes_ = [];
