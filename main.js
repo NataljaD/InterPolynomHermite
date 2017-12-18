@@ -1,3 +1,12 @@
+function toInterpolate() {
+  var data = new HermitData();
+  data.nodes = [0, Math.PI/4, Math.PI*3/4, Math.PI];
+  data.fnodes = data.nodes.map(Math.sin);
+  data.dfnodes = [Math.cos(data.nodes[0]), undefined, undefined, Math.cos(data.nodes[3])];
+  data.d2fnodes = [undefined, undefined, undefined, -Math.sin(data.nodes[3])];
+  return data;
+}
+
 function showHermitLatex(hermit) {
   var hermitLatex = new LatexBuilder(hermit).getHermitLatex();
   document.getElementById('hermit-latex').innerHTML = hermitLatex;
@@ -20,13 +29,14 @@ function collectData() {
   return result;
 }
 
-function onCalculate() {
-  // var data = collectData();
-  var data = new HermitData();
-  data.nodes = [0, Math.PI/4, Math.PI*3/4, Math.PI];
-  data.fnodes = data.nodes.map(Math.sin);
-  data.dfnodes = [Math.cos(data.nodes[0]), undefined, undefined, Math.cos(data.nodes[3])];
-  data.d2fnodes = [undefined, undefined, undefined, -Math.sin(data.nodes[3])];
+function onCalculate(collect) {
+  var data;
+  if(collect) {
+    data = collectData();
+  } else {
+    data = toInterpolate();
+  }
+
   var ermit = new Hermit(data);
 
   showHermitLatex(ermit);
