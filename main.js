@@ -41,11 +41,11 @@ function onCalculate(collect) {
 
   showHermitLatex(ermit);
 
-  var h=(data.nodes[3]-data.nodes[0])/12;
+  var h=(data.nodes[3]-data.nodes[0])/21;
   var tabHermite=[];
   var tabHermiteF=[];
 
-  for (var i=0; i<=12 ; i++)
+  for (var i=0; i<=21 ; i++)
   {
     var arg = data.nodes[0] + i*h;
     tabHermite[i]=arg;
@@ -71,7 +71,7 @@ function onCalculate(collect) {
     }
   };
 
-  var plotData = [trace1, trace2];
+  var plotData = [trace2, trace1];
   Plotly.newPlot('input-plot', plotData);  
 }
 
@@ -84,3 +84,4 @@ function withInputChange(wantInput) {
     document.getElementById('input-data').classList.add('hidden');
   }
 }
+
