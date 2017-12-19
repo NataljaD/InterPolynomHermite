@@ -1,9 +1,41 @@
+function dividedDiffs(hermitData) {
+  var z = [
+    hermitData.nodes[0],
+    hermitData.nodes[0],
+    hermitData.nodes[1],
+    hermitData.nodes[2],
+    hermitData.nodes[3],
+    hermitData.nodes[3],
+    hermitData.nodes[3]
+  ];
+
+  var fz = [
+    hermitData.fnodes[0],
+    hermitData.fnodes[0],
+    hermitData.fnodes[1],
+    hermitData.fnodes[2],
+    hermitData.fnodes[3],
+    hermitData.fnodes[3],
+    hermitData.fnodes[3]
+  ];
+
+  var n = z.length;
+  var diffs = [fz];
+
+  for(var i = 0; i < n; ++i) {
+    for(var j = 0; j < n - i - 1; ++j) {
+
+    } 
+  }
+}
+
 function toInterpolate() {
   var data = new HermitData();
-  data.nodes = [0, Math.PI/4, Math.PI*3/4, Math.PI];
-  data.fnodes = data.nodes.map(Math.sin);
-  data.dfnodes = [Math.cos(data.nodes[0]), undefined, undefined, Math.cos(data.nodes[3])];
-  data.d2fnodes = [undefined, undefined, undefined, -Math.sin(data.nodes[3])];
+  //data.nodes = [0, Math.PI/4, Math.PI*3/4, Math.PI];
+  data.nodes=[1, 2, 3, 4];
+  data.fnodes = data.nodes.map(Math.exp);
+  data.dfnodes = [Math.exp(data.nodes[0]), undefined, undefined, Math.exp(data.nodes[3])];
+  data.d2fnodes = [undefined, undefined, undefined, Math.exp(data.nodes[3])];
   return data;
 }
 
@@ -39,6 +71,8 @@ function onCalculate(collect) {
 
   var ermit = new Hermit(data);
 
+
+
   showHermitLatex(ermit);
 
   var h=(data.nodes[3]-data.nodes[0])/21;
@@ -52,6 +86,7 @@ function onCalculate(collect) {
     tabHermiteF[i]=ermit.calculate(arg);
   }
 
+  console.log(ermit.calculate(Math.PI/4));
   var trace1 = {
     x: data.nodes, 
     y: data.fnodes, 

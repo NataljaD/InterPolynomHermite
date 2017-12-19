@@ -35,9 +35,6 @@ class LatexBuilder {
     return template;
   }
 
-
-
-
   render(numbers, nds) {
     var num = numbers.map(x => this.round(x));
     var nodes = nds.map(x => this.str(this.round(-x), '-'));
