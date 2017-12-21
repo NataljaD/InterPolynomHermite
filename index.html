@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,9 +11,11 @@
     <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
 
     <script src="core.js"></script>
+    <script src="simple-hermit.js"></script>
+    <script src="gauss.js"></script>
     <script src="latex-builder.js"></script>
     <script src="main.js"></script>
-    
+
     <!--script src="ermit_old.js"></script-->
     <script src="plotly-latest.min.js"></script>
     <script type="text/x-mathjax-config">
@@ -25,8 +28,9 @@
     <script type="text/javascript" src="./mathjax/MathJax.js">
     </script>
 </head>
+
 <body>
-        
+
     <header>
         <h1 id="title">Інтерполяційний многочлен Ерміта</h1>
         <h2>Ввести дані самому</h2>
@@ -47,44 +51,50 @@
     <section id="input-data">
         <form action="javascript:" id="input_form" onsubmit="onCalculate(true)">
             <div class="inputs">
-                <div class="inputs_nodes"> 
-                <p>\( x_0 \) = 
-                    <input name="node0" required="required" type="text" placeholder="Input value . . ." id="nodes0">
-                </p>
-                <p>\( x_1 \) = 
-                    <input  type="text" required="required" placeholder="Input value . . ." id="nodes1">
-                </p>
-                <p>\( x_2 \) = 
-                    <input  type="text" required="required" placeholder="Input value . . ." id="nodes2">
-                </p>
-                <p>\( x_3 \) = 
-                    <input  type="text" required="required" placeholder="Input value . . ." id="nodes3">
-                </p>
-                
+                <div class="inputs_nodes">
+                    <p>\( x_0 \) =
+                        <input name="node0" required="required" type="text" placeholder="Input value . . ." id="nodes0">
+                    </p>
+                    <p>\( x_1 \) =
+                        <input type="text" required="required" placeholder="Input value . . ." id="nodes1">
+                    </p>
+                    <p>\( x_2 \) =
+                        <input type="text" required="required" placeholder="Input value . . ." id="nodes2">
+                    </p>
+                    <p>\( x_3 \) =
+                        <input type="text" required="required" placeholder="Input value . . ." id="nodes3">
+                    </p>
+
                 </div>
                 <div class="inputs_f">
-                <p>\( f(x_0) = \) 
-                    <input type="text" required="required" placeholder="Input value . . ." id="fnodes0">
-                </p>
-                <p>\( f(x_1) = \) 
-                    <input type="text" required="required" placeholder="Input value . . ." id="fnodes1">
-                </p>
-                <p>\( f(x_2) = \)
-                    <input type="text" required="required" placeholder="Input value . . ." id="fnodes2">
-                </p>
-                <p>\( f(x_3) = \)
-                    <input type="text" required="required" placeholder="Input value . . ." id="fnodes3">
-                </p>
+                    <p>\( f(x_0) = \)
+                        <input type="text" required="required" placeholder="Input value . . ." id="fnodes0">
+                    </p>
+                    <p>\( f(x_1) = \)
+                        <input type="text" required="required" placeholder="Input value . . ." id="fnodes1">
+                    </p>
+                    <p>\( f(x_2) = \)
+                        <input type="text" required="required" placeholder="Input value . . ." id="fnodes2">
+                    </p>
+                    <p>\( f(x_3) = \)
+                        <input type="text" required="required" placeholder="Input value . . ." id="fnodes3">
+                    </p>
                 </div>
-                
+
                 <div class="inputs_df">
-                        <p>\( f'(x_0) = \)<input type="text" placeholder="Input value . . ." id="dfnodes0"></p>
-                        <p>\( f'(x_3) = \)<input type="text" placeholder="Input value . . ." id="dfnodes3"></p>
+                    <p>\( f'(x_0) = \)
+                        <input type="text" placeholder="Input value . . ." id="dfnodes0">
+                    </p>
+                    <p>\( f'(x_3) = \)
+                        <input type="text" placeholder="Input value . . ." id="dfnodes3">
+                    </p>
                 </div>
-    
+
                 <div class="inputs_d2f">
-                        <p>\( f''(x_3) = \)<input type="text" placeholder="Input value . . ." id="d2fnodes3"></p>
-                        
+                    <p>\( f''(x_3) = \)
+                        <input type="text" placeholder="Input value . . ." id="d2fnodes3">
+                    </p>
+
                 </div>
             </div>
             <div class="controls">
@@ -92,25 +102,39 @@
             </div>
         </form>
     </section>
-    
+
     <section>
         <p id="hermit-latex">
-                $$
-                H(x) = (x - x_1)(x-x_2)(x-x_3)^3 (\alpha x + \beta) f(x_0) + \\
-                       + K(x - x_0)^2(x - x_2)(x - x_3)^3  f(x_1)+ \\
-                       + K(x - x_0)^2(x - x_1)(x - x_3)^3 f(x_2) + \\
-                       + (x - x_0)^2(x - x_1)(x - x_2)(\alpha x^2 + \beta x + \gamma) f(x_3) + \\
-                       + K(x - x_0)(x - x_1)(x - x_2)(x - x_3)^3 f'(x_0)+ \\
-                       + (x - x_0)^2(x - x_1)(x - x_2)(x - x_3)(\alpha x + \beta)f'(x_3) + \\
-                       + K(x - x_0)^2(x - x_1)(x - x_2)(x - x_3)^2 f''(x_3)
-                $$
-        <p>
+            $$ H(x) = (x - x_1)(x-x_2)(x-x_3)^3 (\alpha x + \beta) f(x_0) + \\ + K(x - x_0)^2(x - x_2)(x - x_3)^3
+            f(x_1)+ \\ + K(x - x_0)^2(x - x_1)(x - x_3)^3 f(x_2) + \\ + (x - x_0)^2(x - x_1)(x - x_2)(\alpha
+            x^2 + \beta x + \gamma) f(x_3) + \\ + K(x - x_0)(x - x_1)(x - x_2)(x - x_3)^3 f'(x_0)+ \\
+            + (x - x_0)^2(x - x_1)(x - x_2)(x - x_3)(\alpha x + \beta)f'(x_3) + \\ + K(x - x_0)^2(x -
+            x_1)(x - x_2)(x - x_3)^2 f''(x_3) $$
+            <p>
     </section>
-      
 
-    <div id="input-plot">
 
-    </div>
-        <!-- <button onclick="onClick()">Calc</button> -->
+    <section>
+        <h2>Графік інтерполяційного многочлена Ерміта</h2>
+        <div id="f-plot">
+
+        </div>
+    </section>
+
+    <section>
+        <h2>Графік похідної інтерполяційного многочлена Ерміта</h2>
+        <div id="df-plot">
+
+        </div>
+    </section>
+
+    <section>
+        <h2>Графік другої похідної інтерполяційного многочлена Ерміта</h2>
+        <div id="d2f-plot">
+
+        </div>
+    </section>
+    <!-- <button onclick="onClick()">Calc</button> -->
 </body>
+
 </html>
