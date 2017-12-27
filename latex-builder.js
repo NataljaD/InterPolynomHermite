@@ -16,6 +16,20 @@ class LatexBuilder {
     return value <= 0 ? value : '+' + value;
   }
 
+  /**
+   * 
+   * @param {Array} coefs 
+   */
+  getSimpleHermitLatex(coefs) {
+    var k1 = this.round(coefs[0]);
+    var k = coefs.slice(1).map(x => this.str(this.round(x), '+'))
+    return `
+      $$
+        H_6(x)= ${k1}x^6   ${k[0]}x^5 ${k[1]}x^4 ${k[2]}x^3 
+                ${k[3]}x^2 ${k[4]}x   ${k[5]}
+      $$`;
+  }
+
   getHermitLatex() {
     var data = this.hermit_.data;
     var h = this.hermit_;

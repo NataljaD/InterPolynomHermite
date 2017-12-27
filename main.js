@@ -8,9 +8,14 @@ function toInterpolate() {
     return data;
 }
 
-function showHermitLatex(hermit) {
-    var hermitLatex = new LatexBuilder(hermit).getHermitLatex();
+function showHermitLatex(hermit, coefs) {
+    var builder = new LatexBuilder(hermit, 6);
+    var hermitLatex =builder.getHermitLatex();
     document.getElementById('hermit-latex').innerHTML = hermitLatex;
+
+    var simpleHermitLatex = builder.getSimpleHermitLatex(coefs);
+    document.getElementById('simple-hermit-latex').innerHTML = simpleHermitLatex;
+
     MathJax.Hub.Typeset();
 }
 
@@ -66,11 +71,6 @@ function onCalculate(collect) {
         data = toInterpolate();
     }
 
-    //Цього ерміта будемо юзати тільки для відображення
-    //коефіцієнтів. Щоб було як в курсовій
-    var ermit = new Hermit(data);
-    showHermitLatex(ermit);
-
     //Для табуляції і обрахунків будемо юзати ерміта, який
     //ми найшли з системи (невизначені коефіцієнти).
     //Нехай існує многочлен вигляду:
@@ -81,6 +81,11 @@ function onCalculate(collect) {
     // Теорема якась доводить що ця система завжди розв"язна
     var simpleHermitCoef = getSimpleHermitCoef(data);
 
+    //Цього ерміта будемо юзати тільки для відображення
+    //коефіцієнтів. Щоб було як в курсовій
+    var ermit = new Hermit(data);
+    showHermitLatex(ermit, simpleHermitCoef);
+
     var h = (data.nodes[3] - data.nodes[0]) / N;
     var tabHermite = [];
     var tabHermiteF = [];
@@ -90,7 +95,6 @@ function onCalculate(collect) {
         var arg = data.nodes[0] + i * h;
         tabHermite[i] = arg;
         tabHermiteF[i] = calcSimpleHermit(arg, simpleHermitCoef);
-        console.log(`${tabHermite[i]} --- ${tabHermiteF[i]}`);
     }
 
     showPlot(tabHermite, tabHermiteF, data.nodes, data.fnodes, 'f-plot');
@@ -100,7 +104,6 @@ function onCalculate(collect) {
         var arg = data.nodes[0] + i * h;
         tabHermite[i] = arg;
         tabHermiteF[i] = calcSimpleHermit_d1(arg, simpleHermitCoef);
-        console.log(`${tabHermite[i]} --- ${tabHermiteF[i]}`);
     }
 
     showPlot(tabHermite, tabHermiteF, data.nodes, data.dfnodes, 'df-plot');
@@ -110,7 +113,6 @@ function onCalculate(collect) {
         var arg = data.nodes[0] + i * h;
         tabHermite[i] = arg;
         tabHermiteF[i] = calcSimpleHermit_d2(arg, simpleHermitCoef);
-        console.log(`${tabHermite[i]} --- ${tabHermiteF[i]}`);
     }
 
     showPlot(tabHermite, tabHermiteF, data.nodes, data.d2fnodes, 'd2f-plot');
